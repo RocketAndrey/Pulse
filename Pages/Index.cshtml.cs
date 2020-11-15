@@ -4,21 +4,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Pulse.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePulsePage 
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+      
+        public IList<Pulse.Models.Employee> EmployeesList { get; set; }
+        
+        public IndexModel(Pulse.Data.AsuContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration, ILogger<IndexModel> logger) : base(context, appEnvironment, configuration, logger)
         {
-            _logger = logger;
+            CurrentMonth = 10;// DateTime.Now.Month;
+            CurrentYear = DateTime.Now.Year; 
         }
-
+        public int CurrentMonth { get; set; }
+        public int CurrentYear { get; set;  }
         public void OnGet()
         {
+
+            SqlParameter currentMonth = new SqlParameter("@Month", CurrentMonth  );
+            SqlParameter currentYear = new SqlParameter("@Year", CurrentYear );
+
+            EmployeesList = _context.Employees.FromSqlRaw("sp_PulseUsersMonthWork @Month, @Year", currentMonth, currentYear).ToList();
+
 
         }
     }

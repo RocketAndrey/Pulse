@@ -3,8 +3,84 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<meta http-equiv="refresh" content="5">
+
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Выполнение по сотрудникам</h1>
 </div>
+
+<table class="table table-bordered ">
+<thead>
+    <tr class="text-center">
+        <th>
+
+            @Html.DisplayNameFor(model => model.EmployeesList[0].EmployeeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeesList[0].OnHands)
+        </th>
+        <th>
+           Cегодня 
+        <th>
+            @Model.MonthName[Model.CurrentMonth-1] 
+        </th>
+        
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model.EmployeesList)
+    {
+    <tr>
+        <td>
+            <h3>
+                <a asp-page="./Operation" asp-route-user="@item.EmployeeID" , asp-route-month="@Model.CurrentMonth" , asp-route-year="@Model.CurrentYear ">
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                </a>
+            </h3>
+
+        </td>
+        <td class="text-center">
+            <h3>
+                <a asp-page="./Operation" asp-route-user="@item.EmployeeID" , asp-route-month="@Model.CurrentMonth" , asp-route-year="@Model.CurrentYear " , asp-route-onhand="1">
+                    @Html.DisplayFor(modelItem => item.OnHands)
+                </a>
+            </h3>
+
+        </td>
+        <td class="text-center">
+
+            @item.TodayLabor.ToString("N2")
+            <hr />
+            @Html.DisplayFor(modelItem => item.TodayCount)
+
+            @if (item.TodayNoLaborCount > 0)
+            {
+
+                string s = '(' + item.TodayNoLaborCount.ToString() + ')';
+                @s;
+            }
+        </td>
+        <td class="text-center">
+
+            @item.CurrentMonthLabor.ToString("N2")
+            <hr />
+            <a asp-page="./Operation" asp-route-user="@item.EmployeeID" asp-route-month="@Model.CurrentMonth" asp-route-year="@Model.CurrentYear " , asp-route-onhand="0">
+                @Html.DisplayFor(modelItem => item.CurrentMonthCount)
+            </a>
+
+            @if (item.MonthNolaborCount > 0)
+            {
+
+                string s = '(' + item.MonthNolaborCount.ToString() + ')';
+             
+        <a asp-page="./Operation" asp-route-user="@item.EmployeeID" asp-route-month="@Model.CurrentMonth" asp-route-year="@Model.CurrentYear " asp-route-onhand="0" asp-route-nolabor="1">
+            @s;
+        </a>
+
+            }
+        </td>
+    </tr>
+    }
+</tbody>
+</table>

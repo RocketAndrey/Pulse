@@ -1,0 +1,79 @@
+﻿@page
+@model Pulse.Pages.OperationModel
+@{
+    ViewData["Title"] = "Operation";
+}
+<meta http-equiv="refresh" content="30;URL=/index">
+
+<h2>
+    @Model.UserInfo.EmployeeName
+</h2>
+<dl class="row">
+    <dt class="col-sm-2">
+        Данные:
+    </dt>
+
+    <dd class="col-sm-10">
+        @Model.Result
+    </dl> 
+
+    <table class="table table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th>
+
+                    @Html.DisplayNameFor(model => model.Operations[0].CardNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Operations[0].TypeNominal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Operations[0].OperationName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Operations[0].OperationLabor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Operations[0].EndDate)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Operations)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CardNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TypeNominal)
+                    </td>
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.OperationName)
+                    </td>
+                    <td>
+
+                        @item.OperationLabor.ToString("N2")
+                    </td>
+                    <td>
+
+                        @if (item.EndDate != null)
+                        {
+                            string s = item.EndDate.Value.ToString("d");
+                            @s
+                        }
+                        else
+                        {
+                            string s = "-";
+                            @s
+                        }
+
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
