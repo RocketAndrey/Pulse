@@ -23,7 +23,7 @@ using Microsoft.EntityFrameworkCore;
         [Display(Name = "Трудоемкость")]
         public double OperationLabor { get; set; }
         [Display(Name = "Дата  начала")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
         [Display(Name = "Дата окончания")]
         public DateTime? EndDate { get; set; }
          }

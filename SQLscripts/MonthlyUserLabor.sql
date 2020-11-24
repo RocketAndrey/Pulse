@@ -28,7 +28,8 @@ CurrentMonthCount int,
 TodayLabor float,
 TodayCount Int,
 MonthNolaborCount int,
-TodayNoLaborCount int
+TodayNoLaborCount int,
+QueryCount int 
 
 )
 
@@ -91,6 +92,7 @@ labor.TestChainItemID = eet.[TestChainItemID]
    and MONTH (ro.EndTime) =@Month
    and  YEAR (ro.EndTime) = @year
   and isnull (ro.EndTime,0)> 0
+  and ro.RouteOperationId > 388506
   GROUP BY  ui.UserId, ui.LastName, ui.FN 
 
   --Заполняем сколько операций на руках 
@@ -98,18 +100,36 @@ Update #Work set OnHands = (select top 1 sum(CASE WHEN r1.EndTime IS NULL AND r1
 from RouteOperation r1 where r1.UserID= #Work.UserID Group by r1.UserId) 
 
 --те кто нихрена не делает а операции на руках есть 
-INSERT INTO #Work (userID,userName,OnHands,CurrentMonthLabor,CurrentMonthCount,MonthNolaborCount  )
+INSERT INTO #Work (userID,userName,OnHands,TodayCount,CurrentMonthCount,MonthNolaborCount  )
 select r1.UserId,
 ui.LastName +' '+ ui.FN,
 sum(CASE WHEN r1.EndTime IS NULL AND r1.StartTime IS NOT NULL THEN 1 ELSE 0 END),
+
 null,null,null
 
 from RouteOperation r1
 INNER JOIN UserInfo as ui on r1.UserID=ui.UserId
 where r1.UserID not in (select UserId from #Work)
---and ui.InTablo= 1
+ and r1.RouteOperationId > 388506
 Group by r1.UserId, ui.LastName ,ui.FN
-HAVING sum(CASE WHEN r1.EndTime IS NULL AND r1.StartTime IS NOT NULL THEN 1 ELSE 0 END)> 0 
+HAVING sum(CASE WHEN (r1.EndTime IS NULL AND r1.StartTime IS  not NULL) THEN 1 ELSE 0 END)> 0  
+
+--те кто нихрена не делает а операции в очереди есть 
+INSERT INTO #Work (userID,userName,QueryCount,TodayCount,CurrentMonthCount,MonthNolaborCount  )
+select r1.UserId,
+ui.LastName +' '+ ui.FN,
+sum(CASE WHEN r1.EndTime IS NULL AND r1.StartTime IS  NULL THEN 1 ELSE 0 END),
+
+null,null,null
+
+from RouteOperation r1
+INNER JOIN UserInfo as ui on r1.UserID=ui.UserId
+where r1.UserID not in (select UserId from #Work)
+and r1.RouteOperationId > 388506
+and r1.UserID !='D1284EE1-AD74-4093-9FF9-DA0AE8BBAC38'--не буркун
+Group by r1.UserId, ui.LastName ,ui.FN
+HAVING sum(CASE WHEN (r1.EndTime IS NULL AND r1.StartTime IS  NULL) THEN 1 ELSE 0 END)> 0  
+
 /*
 
 SELECT TOP (100) PERCENT UserId, Name, OnHands, Today, ThisYear
@@ -127,6 +147,28 @@ WHERE (OnHands > 0) OR
          (Today > 0) OR
          (ThisYear > 0)
 */
+--Сколько операций в очереди:
+Update #Work set QueryCount = ( select Isnull( Count (ro.UserId),0) from RouteOperation ro
+Inner join Lot l on ro.LotId = l.LotId 
+inner Join Operation o on o.OperationId = ro.OperationId 
+
+ LEFT  JOIN ( select r1.RouteOperationId, r1.LotId,o1.[order]  from 
+ RouteOperation r1 
+inner  JOIN Operation o1 on o1.OperationId = r1.OperationId 
+ where ISNULL(r1.EndTime,0) >0 ) p On p.LotId= ro.LotId 
+where  isnull(ro.Disabled,0) = 0 
+and ro.UserID= #Work.UserID
+  and ro.StartTime is NULL
+ and ro.EndTime is null
+ and   (p.[Order] = o.[order]-1 OR o.[order]=1)
+ and  ro.RouteOperationId > 388505
+ GROUP BY ro.UserId ) 
+
+  --Заполняем сколько операций на руках 
+Update #Work set OnHands = (select top 1 sum(CASE WHEN r1.EndTime IS NULL AND r1.StartTime IS NOT NULL THEN 1 ELSE 0 END)
+from RouteOperation r1 where r1.UserID= #Work.UserID Group by r1.UserId) 
+
+
 update #work set CurrentMonthCount = 0 where CurrentMonthCount is null
 update #work set CurrentMonthLabor = 0 where CurrentMonthLabor is null
 
@@ -135,7 +177,8 @@ select userid As EmployeeID ,UserName as EmployeeName,isnull(sum(OnHands),0) as 
 isnull(sum(MonthNolaborCount),0) as MonthNolaborCount,
 isnull(SUM(TodayLabor),0) as TodayLabor,
 isnull(SUM(TodayCount),0)   as TodayCount,
-isnull(SUM(TodayNoLaborCount),0) as TodayNoLaborCount
+isnull(SUM(TodayNoLaborCount),0) as TodayNoLaborCount,
+isnull(SUM(QueryCount),0) as QueryCount
 from #Work
 group by userid,UserName
 
@@ -144,7 +187,7 @@ drop table #work
 GO
 
 
-exec [sp_PulseUsersMonthWork] 10,2020
+exec [sp_PulseUsersMonthWork] 11,2020
 
 update RouteOperation set EndTime = StartTime where 
 EndTime IS NULL AND StartTime IS NOT NULL

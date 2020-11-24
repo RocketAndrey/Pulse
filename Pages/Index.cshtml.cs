@@ -20,7 +20,7 @@ namespace Pulse.Pages
         
         public IndexModel(Pulse.Data.AsuContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration, ILogger<IndexModel> logger) : base(context, appEnvironment, configuration, logger)
         {
-            CurrentMonth = 10;// DateTime.Now.Month;
+            CurrentMonth =  DateTime.Now.Month;
             CurrentYear = DateTime.Now.Year; 
         }
         public int CurrentMonth { get; set; }

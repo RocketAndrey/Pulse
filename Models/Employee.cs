@@ -19,5 +19,6 @@ namespace Pulse.Models
         public int TodayCount { get; set; }
         public int TodayNoLaborCount { get; set; }
         public Double TodayLabor { get; set; }
+        public int QueryCount { get; set; }
     }
 }

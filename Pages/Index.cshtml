@@ -19,11 +19,18 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EmployeesList[0].OnHands)
+            <hr />
+            В работе(очередь)
         </th>
         <th>
-           Cегодня 
+           Cегодня, н/ч
+            <hr />
+            операций
+        </th>
         <th>
-            @Model.MonthName[Model.CurrentMonth-1] 
+            @Model.MonthName[Model.CurrentMonth - 1] , н/ч
+            <hr />
+            операций
         </th>
         
     </tr>
@@ -45,6 +52,15 @@
                 <a asp-page="./Operation" asp-route-user="@item.EmployeeID" , asp-route-month="@Model.CurrentMonth" , asp-route-year="@Model.CurrentYear " , asp-route-onhand="1">
                     @Html.DisplayFor(modelItem => item.OnHands)
                 </a>
+                @if (item.QueryCount > 0)
+
+                {
+                    string qs = '(' + item.QueryCount.ToString() + ')';
+                    <a asp-page="./Operation" asp-route-user="@item.EmployeeID" asp-route-month="@Model.CurrentMonth" asp-route-year="@Model.CurrentYear " asp-route-onhand="0" asp-route-nolabor="0" asp-route-query="1">
+
+                        @qs
+                    </a>
+                }
             </h3>
 
         </td>
@@ -74,9 +90,9 @@
 
                 string s = '(' + item.MonthNolaborCount.ToString() + ')';
              
-        <a asp-page="./Operation" asp-route-user="@item.EmployeeID" asp-route-month="@Model.CurrentMonth" asp-route-year="@Model.CurrentYear " asp-route-onhand="0" asp-route-nolabor="1">
-            @s;
-        </a>
+            <a asp-page="./Operation" asp-route-user="@item.EmployeeID" asp-route-month="@Model.CurrentMonth" asp-route-year="@Model.CurrentYear " asp-route-onhand="0" asp-route-nolabor="1">
+                @s;
+            </a>
 
             }
         </td>
