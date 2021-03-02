@@ -15,16 +15,15 @@ namespace Pulse.Pages
         protected IWebHostEnvironment _appEnvironment;
         protected IConfiguration _configuration;
         protected Pulse.Data.AsuContext _asuContext;
-        protected readonly ILogger<IndexModel> _logger;
-
+ 
         public string[] MonthName = new string[] { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
 
-        public BasePulsePage (Pulse.Data.AsuContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration, ILogger<IndexModel> logger)
+        public BasePulsePage (Pulse.Data.AsuContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration)
         {
             _context = context;
             _appEnvironment = appEnvironment;
             _configuration = configuration;
-            _logger = logger;
+          
 
         }
     }

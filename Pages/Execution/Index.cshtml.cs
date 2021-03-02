@@ -9,9 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Pulse.Pages;
 
 
-namespace Pulse.Pages
+namespace Pulse.Pages.Execution
 {
     public class IndexModel : BasePulsePage 
     {

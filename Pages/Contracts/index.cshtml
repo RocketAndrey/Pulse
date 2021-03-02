@@ -1,0 +1,80 @@
+﻿@page
+@model Pulse.Pages.Contracts.IndexModel
+@addTagHelper  *, Pulse
+@{
+    ViewData["Title"] = "index";
+}
+<meta http-equiv="refresh" content="300;URL=./Execution/index">
+<h1>index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NumberSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.ContractsVW[0].Number)
+                </a>
+            </th>
+
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.StartDateSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.ContractsVW[0].CreationDate)
+                </a>
+
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.EndDateSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.ContractsVW[0].EndDate)
+                </a>  
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.ClientSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.ContractsVW[0].Client)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContractsVW[0].Supplier)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ContractsVW)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @item?.CreationDate?.ToString("d")
+                </td>
+                <td>
+                    @item?.EndDate?.ToString("d")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier)
+                </td>
+                <td>
+                    @*<a asp-page="./Edit" asp-route-id="@item.ContractId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ContractId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ContractId">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<page-link page-model="Model.ContractsVW"
+           page-url-pageIndex="@(Model.ContractsVW.PageIndex - 1)"
+       page-url-currentFilter="@(Model.CurrentFilter)"
+           page-url-sortorder="@(Model.CurrentSort)"></page-link>

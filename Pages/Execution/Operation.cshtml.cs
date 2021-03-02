@@ -19,7 +19,7 @@ namespace Pulse.Pages
         public IList<Pulse.Models.Operation > Operations  { get; set; }
         public UserInfo UserInfo;
         public string Result;
-        public OperationModel(Pulse.Data.AsuContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration, ILogger<IndexModel> logger) : base(context, appEnvironment, configuration, logger)
+        public OperationModel(Pulse.Data.AsuContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration, ILogger<IndexModel> logger) : base(context, appEnvironment, configuration)
         {
         }
         public void OnGet(string user, int month = 0 , int year=2020, int onhand = 0, int query=0, int nolabor = 0)

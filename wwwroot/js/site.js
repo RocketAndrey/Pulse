@@ -4,7 +4,7 @@
 // Write your Javascript code.
 function SetClock()
 {
-    dayarray = new Array("воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота");
+    dayarray = new Array("вс.", "пн", "вт", "ср", "чт", "пт", "сб");
     montharray = new Array("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря");
     ndata = new Date();
     var time = [ndata.getHours(), ndata.getMinutes(), ndata.getSeconds()];

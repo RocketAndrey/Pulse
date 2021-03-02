@@ -1,0 +1,111 @@
+﻿@page
+@model Pulse.Pages.Journal.IndexModel
+@{
+}
+<meta http-equiv="refresh" content="300;URL=./Execution/index">
+<h4>Лабораторный журнал </h4>
+<h4>@Model.JournalFilter.CurrentDate.ToShortDateString()  </h4>
+<hr />
+<div class="row">
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <table class="table">
+            <tr>
+                <td>
+
+                    <label asp-for="JournalFilter.CurrentDate" class="control-label"></label>
+
+                </td>
+                <td>
+                    <input asp-for="JournalFilter.CurrentDate" class="form-control" />
+                    <span asp-validation-for="JournalFilter.CurrentDate" class="text-danger"></span>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="JournalFilter.Room.RoomName" class="control-label"></label>
+                </td>
+                <td>
+                    <select asp-for="JournalFilter.RoomID" class="form-control" asp-items="ViewBag.RoomID"></select>
+                    <span asp-validation-for="JournalFilter.RoomID" class="text-danger"></span>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+
+                <td>
+                    <div class="form-group">
+
+                        <input type="submit" value="Показать" class="btn btn-outline-primary" />
+                    </div>
+                </td>
+
+            </tr>
+
+        </table>
+    </form>
+ </div>
+
+
+
+<table class="table table-bordered ">
+    <thead>
+        <tr class="text-center">
+            <th>
+
+                @Html.DisplayNameFor(model => model.JournalList[0].EventTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JournalList[0].WorkName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JournalList[0].OperationName)
+            </th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JournalList[0].UserName)
+            </th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JournalList[0].RoomName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JournalList[0].EquipmentName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Pulse.Models.Journal item in Model.JournalList)
+        {
+            <tr>
+                <td>
+                    @item.EventTime.ToString("t")
+                    </td>
+<td>
+                    @Html.DisplayFor(modelItem => item.WorkName)
+                </td>
+<td>
+    <b> @Html.DisplayFor(modelItem => item.CardNumber)</b>
+         @Html.DisplayFor(modelItem => item.OperationDescription)
+       
+</td>
+         
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoomName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EquipmentName)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
