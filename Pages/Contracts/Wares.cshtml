@@ -6,13 +6,22 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-page="index"> Договора</a></li>
         <li class="breadcrumb-item active" aria-current="page">@Model.ContractName</li>
+
     </ol>
+
 </nav>
+
+<h4>
+    @Html.DisplayFor(model => model.Contract.Number)
+    <span class="badge badge-secondary">
+        @Html.DisplayFor(model => model.Contract.CompleteString)
+    </span>
+</h4>
 <div class="accordion" id="accordionExample">
     <div class="card">
         <div class="card-header" id="headingOne">
             <h2 class="mb-0">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                     Детально:
                 </button>
             </h2>
@@ -20,16 +29,51 @@
 
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                <dl class="row">
+                    <dt class="col-sm-3">Номер договора:  </dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Number) </dd>
+                    <dt class="col-sm-3">Дата создания:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.CreationDate)</dd>
+                    <dt class="col-sm-3">Дата окончания:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.EndDate)</dd>
+                    <dt class="col-sm-3">Код:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Code)</dd>
+
+                    <dt class="col-sm-3">Заказчик:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Client)</dd>
+                    <dt class="col-sm-3">Поставщик:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Supplier)</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Программа испытаний:
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+                <div class="card-body">
+                    <dl class="row">
+                        @foreach (var item in Model.Programs)
+                        {
+                        <dt class="col-sm-3"> @Html.DisplayFor(modelItem => item.Number) </dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(modelItem => item.Name)</dd>
+                        }
+                        </dl>
+                </div>
             </div>
         </div>
     </div>
-   
+
 </div>
 
 <table class="table table-bordered">
     <thead>
-        <tr>
+        <tr class="table-secondary">
             <th>
 
                 @Html.DisplayNameFor(model => model.Wares[0].TypeNominal)

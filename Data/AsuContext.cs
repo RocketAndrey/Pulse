@@ -22,7 +22,7 @@ namespace Pulse.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Ware> Wares { get; set; }
         public DbSet<Lot> Lots { get; set; }
-
+        public DbSet<TestProgram> TestPrograms { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
