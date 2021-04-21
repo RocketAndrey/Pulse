@@ -5,76 +5,121 @@
     ViewData["Title"] = "index";
 }
 <meta http-equiv="refresh" content="300;URL=./Execution/index">
-<h1>index</h1>
+<script>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>
+  
+    function OnBlurFilter(event) {
 
-                <a asp-page="./Index" asp-route-sortOrder="@Model.NumberSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.ContractsVW[0].Number)
-                </a>
-            </th>
+        var form = document.forms.filter;
+        form.submit(); 
+      ;
+    }
+</script>
+<form method="post" id="filter">
+    <input type="hidden" asp-for="CurrentMode" />
+    <input type="hidden" asp-for="CurrentSort" />
+    
+    <div class="form-group">
 
-            <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.StartDateSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.ContractsVW[0].CreationDate)
-                </a>
+        <a asp-page="Index" class="btn @(Model.CurrentMode=="all"? "btn-secondary ": "btn-outline-secondary ") btn-sm" asp-route-mode="all">Все</a>
+        <a asp-page="Index" class="btn @(Model.CurrentMode!="all"? "btn-secondary ": "btn-outline-secondary ")  btn-sm" asp-route-mode="work">В работе</a>
+    </div>
 
-            </th>
-            <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.EndDateSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.ContractsVW[0].EndDate)
-                </a>  
-            </th>
-            <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.ClientSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.ContractsVW[0].Client)
-                </a>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContractsVW[0].Supplier)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ContractsVW)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Number)
-                </td>
-                <td>
-                    @item?.CreationDate?.ToString("d")
-                </td>
-                <td>
-                    @item?.EndDate?.ToString("d")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Client)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Supplier)
-                </td>
-                <td>
-                    @*<a asp-page="./Edit" asp-route-id="@item.ContractId">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.ContractId">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.ContractId">Delete</a>*@
-                </td>
+
+    <p />
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-secondary">
+                <th>
+
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.NumberSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.ContractsVW[0].Number)
+                    </a>
+                </th>
+
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.StartDateSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.ContractsVW[0].CreationDate)
+                    </a>
+
+                </th>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.EndDateSort"
+                       asp-route-currentFilter="@Model.CurrentFilter" >
+                        @Html.DisplayNameFor(model => model.ContractsVW[0].EndDate)
+                    </a>
+                </th>
+                <th>
+                    <a  asp-page="./Index" asp-route-sortOrder="@Model.ClientSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.ContractsVW[0].Client)
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.CodeSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.ContractsVW[0].Code)
+                    </a>
+
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContractsVW[0].CompleteString)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <tr class="table-secondary">
+                <td>
+                    <input asp-for="contractsFilter.Number" onblur="OnBlurFilter(this)" class="form-control form-control-sm" placeholder="номер" />
+                </td>
+                <td>
+                    <input disabled asp-for="contractsFilter.StartDate" onblur="OnBlurFilter(this)" class="form-control form-control-sm " />
+                </td>
+                <td>
+                    <input  disabled asp-for="contractsFilter.EndDate" onblur="OnBlurFilter(this)" class="form-control form-control-sm" />
+                </td>
+                <td>
+                    <select asp-for="contractsFilter.OrganizationID" onblur="OnBlurFilter(this)" class="form-control form-control-sm" asp-items="ViewBag.OrganizationID" placeholder="Заказчик"></select>
+                </td>
+                <td>
+                    <input asp-for="contractsFilter.Code" onblur="OnBlurFilter(this)" class="form-control form-control-sm" placeholder="код договора" />
+                </td>
+                <td></td>
+            </tr>
+            @foreach (var item in Model.ContractsVW)
+            {
+                string selectedRow = item.Complete ? "table-success" : item.MissedEndDate ? "table-danger" : "";
+
+                <tr class=@selectedRow>
+                    <td>
+
+                        <a asp-page="Wares" asp-route-contractID="@item.ContractId">
+                            @Html.DisplayFor(modelItem => item.Number)
+                        </a>
+                    </td>
+                    <td>
+                        @item?.CreationDate?.ToString("d")
+                    </td>
+                    <td>
+                        @item?.EndDate?.ToString("d")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Client)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompleteString)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
 <page-link page-model="Model.ContractsVW"
            page-url-pageIndex="@(Model.ContractsVW.PageIndex - 1)"
-       page-url-currentFilter="@(Model.CurrentFilter)"
+           page-url-currentFilter="@(Model.CurrentFilter)"
            page-url-sortorder="@(Model.CurrentSort)"></page-link>

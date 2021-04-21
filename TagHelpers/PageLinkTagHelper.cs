@@ -67,6 +67,7 @@ namespace FilterSortPagingApp.TagHelpers
                 link.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
             }
             item.AddCssClass("page-item");
+            
             link.AddCssClass("page-link");
 
           //  link.InnerHtml.Append(pageNumber.ToString());

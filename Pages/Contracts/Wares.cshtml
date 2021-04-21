@@ -1,0 +1,88 @@
+﻿@page
+@model Pulse.Pages.Contracts.WaresModel
+@{
+}
+<nav tyle="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="index"> Договора</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.ContractName</li>
+    </ol>
+</nav>
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Детально:
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+
+                @Html.DisplayNameFor(model => model.Wares[0].TypeNominal)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Wares[0].ClassName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Wares[0].InStoreString)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Wares[0].CompleteString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Wares[0].LotCount)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var item in Model.Wares)
+        {
+            string selectedRow = item.Complete ? "table-success" : item.InProgress ? "" : "table-danger";
+
+            <tr class=@selectedRow>
+
+                <td>
+                    <a asp-page="Lot" asp-route-id="@item.WareID">
+                        @Html.DisplayFor(modelItem => item.TypeNominal)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClassName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InStoreString)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompleteString)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LotCount)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

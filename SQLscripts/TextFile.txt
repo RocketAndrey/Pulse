@@ -1,0 +1,41 @@
+﻿exec sp_executesql N'select (l.PrefixNumber + ''-'' + t.TestTypeId + ''-'' + CONVERT(varchar(100), l.Number) + ISNULL(l.SuffixNumber,'''')) as Name, l.LotId
+                                            from Lot as l
+                                            inner join Test as t on l.TestId = t.TestId
+                                            where l.LotId = @id',N'@id bigint',@id=245241
+
+exec sp_executesql N'SELECT TOP (1) [t0].[LotId], [t0].[LotTypeId], [t0].[ParentId], [t0].[MarkSymbolId], [t0].[ConclusionId], [t0].[UserId], [t0].[QTY], [t0].[Description], [t0].[CreateDate], [t0].[ManufacturingDate], [t0].[PrefixNumber], [t0].[Number], [t0].[SuffixNumber], [t0].[PartNumber], [t0].[Summary], [t0].[ProductNumbers], [t0].[PackageMarking], [t0].[ROHS_Id], [t0].[Kriterion], [t0].[Results], [t0].[Conclusion], [t0].[RadiationId], [t0].[NoteId], [t0].[LeaderId], [t0].[AcceptanceTypeId], [t0].[Note], [t0].[IsProtocol], [t0].[generated] AS [Generated], [t0].[WareId], [t0].[Serialized], [t0].[OnStore], [t0].[PackingTypeId], [t0].[LotParentId], [t0].[DefectNumbersCount], [t0].[Disabled], [t0].[TestId], [t0].[ManufactoryId], [t0].[WasPrinted], [t0].[Defected], [t0].[NoteEnd], [t0].[ConclusionEnd], [t0].[HasGeneratedMK], [t0].[MKCount], [t0].[PackCount], [t0].[IsSent], [t0].[SentDate], [t0].[LabLeaderId], [t0].[IsArchive], [t0].[FactResistance], [t0].[IsDefectNotice], [t0].[AppGeneratedInfo], [t0].[StateReady], [t0].[ConclusionSpec], [t0].[Tray], [t0].[PackingKindId], [t0].[Selection], [t0].[AccountingMode], [t0].[Measure], [t0].[TechnicalSuffix], [t0].[Marking]
+FROM [dbo].[Lot] AS [t0]
+WHERE [t0].[LotId] = @p0',N'@p0 bigint',@p0=245241
+
+exec sp_executesql N'SELECT [t0].[LotId], [t0].[LotTypeId], [t0].[ParentId], [t0].[MarkSymbolId], [t0].[ConclusionId], [t0].[UserId], [t0].[QTY], [t0].[Description], [t0].[CreateDate], [t0].[ManufacturingDate], [t0].[PrefixNumber], [t0].[Number], [t0].[SuffixNumber], [t0].[PartNumber], [t0].[Summary], [t0].[ProductNumbers], [t0].[PackageMarking], [t0].[ROHS_Id], [t0].[Kriterion], [t0].[Results], [t0].[Conclusion], [t0].[RadiationId], [t0].[NoteId], [t0].[LeaderId], [t0].[AcceptanceTypeId], [t0].[Note], [t0].[IsProtocol], [t0].[generated] AS [Generated], [t0].[WareId], [t0].[Serialized], [t0].[OnStore], [t0].[PackingTypeId], [t0].[LotParentId], [t0].[DefectNumbersCount], [t0].[Disabled], [t0].[TestId], [t0].[ManufactoryId], [t0].[WasPrinted], [t0].[Defected], [t0].[NoteEnd], [t0].[ConclusionEnd], [t0].[HasGeneratedMK], [t0].[MKCount], [t0].[PackCount], [t0].[IsSent], [t0].[SentDate], [t0].[LabLeaderId], [t0].[IsArchive], [t0].[FactResistance], [t0].[IsDefectNotice], [t0].[AppGeneratedInfo], [t0].[StateReady], [t0].[ConclusionSpec], [t0].[Tray], [t0].[PackingKindId], [t0].[Selection], [t0].[AccountingMode], [t0].[Measure], [t0].[TechnicalSuffix], [t0].[Marking]
+FROM [dbo].[Lot] AS [t0]
+WHERE [t0].[LotId] = @p0',N'@p0 bigint',@p0=244946
+
+exec sp_executesql N'SELECT [t0].[RouteOperationId], [t0].[UserId], [t0].[StartTime], [t0].[EndTime], [t0].[ReceptionNumber], 
+    (CASE 
+        WHEN [t0].[Qty] IS NOT NULL THEN 
+            (CASE 
+                WHEN ([t0].[Qty]) = @p1 THEN NULL
+                ELSE [t0].[Qty]
+             END)
+        ELSE NULL
+     END) AS [Qty], [t0].[MethodId], [t0].[ModeId], [t0].[ProductNumbers], [t0].[Parallel], 
+    (CASE 
+        WHEN ([t0].[Disabled] IS NOT NULL) AND (([t0].[Disabled]) = 1) THEN 1
+        WHEN NOT (([t0].[Disabled] IS NOT NULL) AND (([t0].[Disabled]) = 1)) THEN 0
+        ELSE NULL
+     END) AS [Disabled], [t0].[BrokenMeasure], [t1].[TestId], [t1].[TestTypeId], 
+    (CASE 
+        WHEN ([t1].[Description] IS NOT NULL) AND (LEN([t1].[Description]) > @p2) THEN CONVERT(NVarChar(500),[t1].[Description])
+        ELSE CONVERT(NVarChar(500),@p3)
+     END) AS [Description], [t1].[Order] AS [Order], [t1].[Number], [t2].[BaseOperationId], 
+    (CASE 
+        WHEN ([t1].[Description] IS NOT NULL) AND (LEN([t1].[Description]) > @p4) THEN @p5 + [t2].[Code]
+        ELSE CONVERT(NVarChar(11),[t2].[Code])
+     END) AS [Code], [t2].[Name], [t2].[Main]
+FROM [dbo].[RouteOperation] AS [t0]
+INNER JOIN [dbo].[Operation] AS [t1] ON [t0].[OperationId] = [t1].[OperationId]
+INNER JOIN [dbo].[BaseOperation] AS [t2] ON [t1].[BaseOperationId] = [t2].[BaseOperationId]
+INNER JOIN [dbo].[Operation] AS [t3] ON [t3].[OperationId] = [t0].[OperationId]
+WHERE ([t0].[LotId] = @p0) AND ((NOT ([t1].[Deleted] IS NOT NULL)) OR (NOT (([t1].[Deleted]) = 1)))
+ORDER BY [t3].[Order]',N'@p0 bigint,@p1 int,@p2 int,@p3 nvarchar(4000),@p4 int,@p5 nvarchar(4000)',@p0=245241,@p1=0,@p2=0,@p3=N'',@p4=0,@p5=N'*'
