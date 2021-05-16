@@ -27,16 +27,23 @@
             </h2>
         </div>
 
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-3">Номер договора:  </dt>
                     <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Number) </dd>
                     <dt class="col-sm-3">Дата создания:</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.CreationDate)</dd>
-                    <dt class="col-sm-3">Дата окончания:</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.EndDate)</dd>
-                    <dt class="col-sm-3">Код:</dt>
+                  
+                    <dd class="col-sm-9">
+                        @Model.Contract.CreationDate?.ToString("d");
+                    </dd>
+                    <dt class="col-sm-3">Дата окончания :</dt>
+                    <dd class="col-sm-9">
+                        @Model.Contract.EndDate?.ToString("d");
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Contract.Code)
+                    </dt>
                     <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Code)</dd>
 
                     <dt class="col-sm-3">Заказчик:</dt>
@@ -46,6 +53,12 @@
                 </dl>
             </div>
         </div>
+       
+    </div>
+
+</div>
+<div class="accordion" id="accordionExample2">
+    <div class="card">
         <div class="card-header" id="headingTwo">
             <h2 class="mb-0">
                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -54,79 +67,77 @@
             </h2>
         </div>
 
-        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+        <div id="collapseTwo" class="collapse hide" aria-labelledby="headingTwo" data-parent="#accordionExample2">
             <div class="card-body">
                 <div class="card-body">
                     <dl class="row">
                         @foreach (var item in Model.Programs)
                         {
-                        <dt class="col-sm-3"> @Html.DisplayFor(modelItem => item.Number) </dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(modelItem => item.Name)</dd>
+                            <dt class="col-sm-3"> @Html.DisplayFor(modelItem => item.Number) </dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(modelItem => item.Name)</dd>
                         }
-                        </dl>
+                    </dl>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr class="table-secondary">
+                    <th>
 
-<table class="table table-bordered">
-    <thead>
-        <tr class="table-secondary">
-            <th>
+                        @Html.DisplayNameFor(model => model.Wares[0].TypeNominal)
+                    </th>
 
-                @Html.DisplayNameFor(model => model.Wares[0].TypeNominal)
-            </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Wares[0].ClassName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Wares[0].InStoreString)
+                    </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Wares[0].ClassName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Wares[0].InStoreString)
-            </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Wares[0].CompleteString)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Wares[0].LotCount)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                @foreach (var item in Model.Wares)
+                {
+                    string selectedRow = item.Complete ? "table-success" : item.InProgress ? "" : "table-danger";
 
-            <th>
-                @Html.DisplayNameFor(model => model.Wares[0].CompleteString)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Wares[0].LotCount)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        @foreach (var item in Model.Wares)
-        {
-            string selectedRow = item.Complete ? "table-success" : item.InProgress ? "" : "table-danger";
+                    <tr class=@selectedRow>
 
-            <tr class=@selectedRow>
+                        <td>
+                            <a asp-page="Lot" asp-route-id="@item.WareID">
+                                @Html.DisplayFor(modelItem => item.TypeNominal)
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InStoreString)
+                        </td>
 
-                <td>
-                    <a asp-page="Lot" asp-route-id="@item.WareID">
-                        @Html.DisplayFor(modelItem => item.TypeNominal)
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ClassName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InStoreString)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.CompleteString)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LotCount)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompleteString)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LotCount)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>

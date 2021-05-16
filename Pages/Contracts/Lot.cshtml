@@ -15,7 +15,7 @@
         </li>
         <li class="breadcrumb-item active" aria-current="page">
 
-            @Model.WareName
+            @Model.Ware.TypeNominal
 
         </li>
 
@@ -23,160 +23,208 @@
 </nav>
 @{
     <h4>
-        @Model.CurrentLot.TypeNominal <span class="badge badge-secondary">
-            @Model.CurrentLot.CompleteString
+        @Model?.CurrentLot?.TypeNominal <span class="badge badge-secondary">
+            @Model?.CurrentLot?.CompleteString
         </span>
     </h4>
 }
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Детали договора:
+                </button>
+            </h2>
+        </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>
+        <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Номер договора:  </dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Number) </dd>
+                    <dt class="col-sm-3">Дата создания:</dt>
+                    <dd class="col-sm-9">
+                        @Model.Contract.CreationDate?.ToString("d");
+                    </dd>
+                    <dt class="col-sm-3">Дата окончания :</dt>
+                    <dd class="col-sm-9">
+                        @Model.Contract.EndDate?.ToString("d");
+                    </dd>
 
-                @Html.DisplayNameFor(model => model.Lots[0].PartNumber)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.Lots[0].ManufacturingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lots[0].QTY)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.Lots[0].SuffixNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lots[0].CompleteString)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-
-        @foreach (var item in Model.Lots)
-        {
-            string selectedRow = item.Complete ? "table-success" : "";
-            if (item.LotID == Model.CurrentLotID) { selectedRow = "table-warning"; }
-            <tr class=@selectedRow>
-
-                <td>
-                    <a asp-page="Lot" asp-route-lotid="@item.LotID" asp-route-id=@Model.WareID>
-                        @Html.DisplayFor(modelItem => item.PartNumber)
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ManufacturingDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QTY)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.SuffixNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CompleteString)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@if (Model.CurrentLot.ChildLots != null)
-{
-
-    int selectedTab = 0;
-    int selectedFade = 0;
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-
-        @foreach (var item in Model.CurrentLot.ChildLots)
-        {
-            <li class="nav-item">
-                <a class="@(selectedTab==0?"nav-link active":"nav-link")" id="@(item.IDKey + "-tab")" data-toggle="tab" href="#@(item.IDKey +  "")" role="tab" aria-controls="@(item.IDKey +  "")" aria-selected="@(selectedTab==0?"true":"false")">
-
-                    @(item.TestType)
-
-                </a>
-
-            </li>
-            selectedTab++;
-        }
-    </ul>
-
-    <div class="tab-content" id="myTabContent">
-
-
-
-        @foreach (var item in Model.CurrentLot.ChildLots)
-        {
-            <div class="@(selectedFade==0?"tab-pane fade show active":"tab-pane fade")" id="@(item.IDKey +  "")" role="tabpanel" aria-labelledby="@(item.IDKey + "-tab")">
-
-
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>
-
-                                @Html.DisplayNameFor(model => model.CurrentLot.TestType)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => item.RouteOperations[0].Number)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => item.RouteOperations[0].Code)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => item.RouteOperations[0].Description)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => item.RouteOperations[0].StartTime)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => item.RouteOperations[0].EndTime)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @foreach (var itemR in item.RouteOperations)
-                        {
-                            string selectedRow = itemR.Complete ? "table-success" : "";
-
-                            <tr class="@(selectedRow)">
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => itemR.TestTypeID)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => itemR.Number)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => itemR.Code)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => itemR.Description)
-                                </td>
-                                <td>
-                                    @(itemR.StartTime==null?"-":itemR?.StartTime?.ToString("d") )
-
-                                </td>
-                                <td>
-                                    @(itemR.EndTime==null?"-":itemR?.EndTime?.ToString("d") )
-
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
+                    <dt class="col-sm-3">Заказчик:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Client)</dd>
+                    <dt class="col-sm-3">Поставщик:</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Contract.Supplier)</dd>
+                </dl>
             </div>
-
-            selectedFade++;
-        }
+        </div>
 
     </div>
-}
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Lots[0].CardNumber)
+                </th>
+                <th>
+
+                    @Html.DisplayNameFor(model => model.Lots[0].PartNumber)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Lots[0].ManufacturingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Lots[0].QTY)
+                </th>
+
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Lots[0].CompleteString)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Lots)
+            {
+                string selectedRow = item.Complete ? "table-success" : "";
+                if (item.LotID == Model.CurrentLotID) { selectedRow = "table-warning"; }
+
+                <tr class=@selectedRow>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CardNumber)
+                    </td>
+                    <td>
+                        <a asp-page="Lot" asp-route-lotid="@item.LotID" asp-route-id=@Model.WareID>
+                            @Html.DisplayFor(modelItem => item.PartNumber)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ManufacturingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QTY)
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompleteString)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model?.CurrentLot?.ChildLots != null)
+    {
+
+        int selectedTab = 0;
+        int selectedFade = 0;
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            @foreach (var item in Model.CurrentLot.ChildLots)
+            {
+                <li class="nav-item">
+                    <a class="@(selectedTab==0?"nav-link active":"nav-link")" id="@(item.IDKey + "-tab")" data-toggle="tab" href="#@(item.IDKey +  "")" role="tab" aria-controls="@(item.IDKey +  "")" aria-selected="@(selectedTab==0?"true":"false")">
+
+                        @(item.TestType)
+
+                    </a>
+
+                </li>
+                selectedTab++;
+            }
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+
+
+
+            @foreach (var item in Model.CurrentLot.ChildLots)
+            {
+                <div class="@(selectedFade==0?"tab-pane fade show active":"tab-pane fade")" id="@(item.IDKey +  "")" role="tabpanel" aria-labelledby="@(item.IDKey + "-tab")">
+
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => item.RouteOperations[0].Number)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.RouteOperations[0].Description)
+                                </th>
+                                <th>
+
+                                    @Html.DisplayNameFor(model => model.CurrentLot.QTY)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => item.RouteOperations[0].ProductNumbers)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => item.RouteOperations[0].StartTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.RouteOperations[0].EndTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.RouteOperations[0].Result)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.RouteOperations[0].UserName)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var itemR in item.RouteOperations)
+                            {
+                                string selectedRow = itemR.Complete ? "table-success" : "";
+                                if (itemR.Disabled == 1) { selectedRow = "table-secondary"; }
+
+                                <tr class="@(selectedRow)">
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => itemR.Number)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => itemR.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => itemR.QTY)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => itemR.ProductNumbers)
+                                    </td>
+                                    <td>
+                                        @(itemR.StartTime==null?"-":itemR?.StartTime?.ToString("d") )
+
+                                    </td>
+                                    <td>
+                                        @(itemR.EndTime==null?"-":itemR?.EndTime?.ToString("d") )
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => itemR.Result)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => itemR.UserName)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+
+                selectedFade++;
+            }
+
+        </div>
+    }
 

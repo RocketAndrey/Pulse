@@ -32,6 +32,7 @@ namespace Pulse.Pages.Contracts
             }
             string sql = "dbo.sp_PulseGetContractWares @ContractID";
             SqlParameter scontractID = new SqlParameter("@ContractID", contractID);
+           
             Wares = _context.Wares.FromSqlRaw(sql, scontractID).ToList();
 
             Contract = _context.Contracts.FromSqlRaw("dbo.sp_PulseGetContracts @ContractID", new SqlParameter("@ContractID", contractID)).ToList()[0];

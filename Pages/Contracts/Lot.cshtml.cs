@@ -16,8 +16,9 @@ namespace Pulse.Pages.Contracts
     {
         public List<Lot> Lots;
         public Contract Contract;
-        public string WareName;
+
         public int WareID;
+        public Ware Ware; 
         public LotModel(Pulse.Data.AsuContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration, ILogger<IndexModel> logger) : base(context, appEnvironment, configuration)
         {
 
@@ -35,31 +36,45 @@ namespace Pulse.Pages.Contracts
             {
                 lotid = 0;
             }
-
-            Lots = _context.Lots.FromSqlRaw("dbo.sp_PulseGetWareLots @WareID", new SqlParameter("@WareID", id)).ToList();
-            if (Lots.Count != 0)
-            {
-                if (Lots.Count == 1 || lotid == 0) { CurrentLotID = Lots[0].LotID; } else { CurrentLotID = (Int64)lotid; };
-            }
             WareID = (int)id;
-            WareName = Lots[0].TypeNominal;
-            Contract = _context.Contracts.FromSqlRaw("dbo.sp_PulseGetContracts @ContractID", new SqlParameter("@ContractID", Lots[0].ContractID)).ToList()[0];
+            //ХЗ почему так, но FirstOrDefault не работает  
+            string sql =String.Format("dbo.sp_PulseGetContractWares @WareID={0}",WareID) ;
+             List<Ware> Wares=_context.Wares.FromSqlRaw(sql).ToList();
+
+          
+            if (Wares.Count == 0)
+            {
+                return NotFound();
+            }
+            Ware = Wares[0];
+           
+            Contract = _context.Contracts.FromSqlRaw("dbo.sp_PulseGetContracts @ContractID", new SqlParameter("@ContractID", Ware.ContractID)).ToList()[0];
+
 
             if (Contract == null)
             {
                 return NotFound();
             }
-            CurrentLot = (Lot)Lots.FirstOrDefault(e => e.LotID == CurrentLotID);
 
-            if (CurrentLot != null)
+            Lots = _context.Lots.FromSqlRaw("dbo.sp_PulseGetWareLots @WareID", new SqlParameter("@WareID", WareID)).ToList();
+            if (Lots.Count != 0)
             {
-                CurrentLot.ChildLots = _context.Lots.FromSqlRaw("[dbo].[sp_PulseGetLotSubLots] @LotID", new SqlParameter("@LotID", CurrentLotID)).ToList();
+                if (Lots.Count == 1 || lotid == 0) { CurrentLotID = Lots[0].LotID; } else { CurrentLotID = (Int64)lotid; };
 
-                foreach(Lot childlot in CurrentLot.ChildLots)
+            
+         
+                CurrentLot = (Lot)Lots.FirstOrDefault(e => e.LotID == CurrentLotID);
+
+                if (CurrentLot != null)
                 {
-                    childlot.RouteOperations = _context.RouteOperations.FromSqlRaw("[dbo].[sp_PulseGetLotRO] @LotID", new SqlParameter("@LotID", childlot.LotID)).ToList();
-                }
+                    CurrentLot.ChildLots = _context.Lots.FromSqlRaw("[dbo].[sp_PulseGetLotSubLots] @LotID", new SqlParameter("@LotID", CurrentLotID)).ToList();
 
+                    foreach (Lot childlot in CurrentLot.ChildLots)
+                    {
+                        childlot.RouteOperations = _context.RouteOperations.FromSqlRaw("[dbo].[sp_PulseGetLotRO] @LotID", new SqlParameter("@LotID", childlot.LotID)).ToList();
+                    }
+
+                }
             }
 
 
