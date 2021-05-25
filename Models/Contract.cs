@@ -35,12 +35,12 @@ namespace Pulse.Models
 
             }
         }
-        [Display(Name = "Всего/выполнено:")]
+        [Display(Name = "Всего|вып.|некомл.")]
         public string CompleteString
             {
             get
             {
-                return WaresCount.ToString() + "/" + (WaresCount-WaresNoEnd - NotStartedWareCount).ToString();
+                return WaresCount.ToString() + "|" + (WaresCount-WaresNoEnd - NotStartedWareCount).ToString() + "|" + NotCompleteCount.ToString();
             }
             }
 
@@ -48,10 +48,17 @@ namespace Pulse.Models
         {
             get
             {
+                //если контракт закрыт 
+                if (ContractStateID == 12) { return true; }
+                // tckb gthtxtym gecnjq
                 if (WaresCount == 0) { return false; }
                 return (WaresNoEnd == 0 && NotStartedWareCount ==0) ; 
             }
         }
+        /// <summary>
+        /// контроль ВП ?
+        /// </summary>
+        public bool PZ { get; set; }
         public bool MissedEndDate 
         {
             get
@@ -59,6 +66,10 @@ namespace Pulse.Models
                 return Complete | (DateTime.Compare( DateTime.Now, EndDate ?? DateTime.Now.AddDays(1)) > 0);
             }
         }
+
+        public Int64 ContractStateID { get; set; }
+        public string ContractState { get; set; }
+        public int NotCompleteCount { get; set; }
 
     }
 }

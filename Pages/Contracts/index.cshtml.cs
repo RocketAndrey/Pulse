@@ -96,7 +96,7 @@ namespace Pulse.Pages.Contracts
             };
             if (CurrentMode != "all")
             {
-                contracts = contracts.Where(e => e.Complete == false).ToList();
+                contracts = contracts.Where(e => e.Complete == false ).ToList();
 
             }
             
@@ -177,7 +177,8 @@ namespace Pulse.Pages.Contracts
             {
                 // Set the secure flag, which Chrome's changes will require for SameSite none.
                 // Note this will also require you to be running on HTTPS.
-                Secure = true,
+               
+                //.Secure = true,
                 
                 // Set the cookie to HTTP only which is good practice unless you really do need
                 // to access it client side in scripts.
