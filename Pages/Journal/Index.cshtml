@@ -6,11 +6,10 @@
 <h4>Лабораторный журнал </h4>
 <h4>@Model.JournalFilter.CurrentDate.ToShortDateString()  </h4>
 <hr />
-<div class="row">
+
 
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
         <table class="table">
             <tr>
                 <td>
@@ -23,9 +22,6 @@
                     <span asp-validation-for="JournalFilter.CurrentDate" class="text-danger"></span>
 
                 </td>
-
-            </tr>
-            <tr>
                 <td>
                     <label asp-for="JournalFilter.Room.RoomName" class="control-label"></label>
                 </td>
@@ -33,11 +29,6 @@
                     <select asp-for="JournalFilter.RoomID" class="form-control" asp-items="ViewBag.RoomID"></select>
                     <span asp-validation-for="JournalFilter.RoomID" class="text-danger"></span>
                 </td>
-
-            </tr>
-            <tr>
-                <td>
-
                 <td>
                     <div class="form-group">
 
@@ -49,7 +40,6 @@
 
         </table>
     </form>
- </div>
 
 
 
@@ -61,8 +51,12 @@
                 @Html.DisplayNameFor(model => model.JournalList[0].EventTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.JournalList[0].WorkName)
+            @Html.DisplayNameFor(model => model.JournalList[0].WorkName)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JournalList[0].LeaderName)
+            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.JournalList[0].OperationName)
             </th>
@@ -72,11 +66,9 @@
             </th>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.JournalList[0].RoomName)
+                @Html.DisplayNameFor(model => model.JournalList[0].RoomName)/    @Html.DisplayNameFor(model => model.JournalList[0].EquipmentName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JournalList[0].EquipmentName)
-            </th>
+            
         </tr>
     </thead>
     <tbody>
@@ -86,24 +78,26 @@
                 <td>
                     @item.EventTime.ToString("t")
                     </td>
-<td>
-                    @Html.DisplayFor(modelItem => item.WorkName)
-                </td>
-<td>
-    <b> @Html.DisplayFor(modelItem => item.CardNumber)</b>
-         @Html.DisplayFor(modelItem => item.OperationDescription)
+                    <td>
+                                        @Html.DisplayFor(modelItem => item.WorkName)
+                      </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LeaderName)
+                    </td>
+                    <td>
+                        <b> @Html.DisplayFor(modelItem => item.CardNumber)</b>
+                             @Html.DisplayFor(modelItem => item.OperationDescription)
        
-</td>
+                    </td>
          
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RoomName)
-                </td>
-                <td>
+                    <b> @Html.DisplayFor(modelItem => item.RoomName)</b>
                     @Html.DisplayFor(modelItem => item.EquipmentName)
                 </td>
+                
 
             </tr>
         }

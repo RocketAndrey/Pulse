@@ -9,7 +9,7 @@ namespace Pulse.Models
         public string WorkName { get; set; }
         [Display(Name = "Типономинал")]
         public string TypeNominal { get; set; }
-        [Display(Name = "Операция")]
+        [Display(Name = "Содержание указания, распоряжения, проведенные действия,  выполненнные мероприятия")]
         public string OperationName { get; set; }
         [Display(Name = "№ МК")]
         public string CardNumber { get; set; }
@@ -18,7 +18,7 @@ namespace Pulse.Models
 
 
         public System.Guid userID { get; set; }
-        [Display(Name = "Сотрудник")]
+        [Display(Name = "Исполнитель")]
         public string UserName { get; set; }
         [Display(Name = "Колличество")]
         public int QTY { get; set; }
@@ -37,5 +37,9 @@ namespace Pulse.Models
                 return OperationName + ";  " + TypeNominal + "; " + QTY +" шт."; 
             }
         }
+        public System.Guid? LeaderID { get; set; }
+        [Display(Name = "От кого поступило указание/ кому доложено")]
+        public string LeaderName { get; set; }
+        
     }
 }

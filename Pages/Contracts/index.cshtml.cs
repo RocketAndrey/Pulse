@@ -132,9 +132,7 @@ namespace Pulse.Pages.Contracts
             try
             {
                 setPage(CurrentSort, "1", CurrentMode);
-               ///FillJournal();
-                ///FillRooms();
-                ///ViewData["RoomID"] = new SelectList(Rooms.OrderBy(e => e.RoomName), "RoomID", "RoomName");
+       
             }
             catch (Exception e)
             {
