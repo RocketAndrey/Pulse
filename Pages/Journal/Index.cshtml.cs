@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Pulse.Pages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Pulse.Pages.Journal
@@ -27,6 +24,7 @@ namespace Pulse.Pages.Journal
         {
             JournalFilter = new Models.JournalFilter();
         }
+
 
 
 
@@ -74,7 +72,7 @@ namespace Pulse.Pages.Journal
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                return  NotFound(e.Message);
 
             }
             return Page();

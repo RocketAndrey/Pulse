@@ -24,12 +24,21 @@ namespace Pulse.Data
         public DbSet<Lot> Lots { get; set; }
         public DbSet<TestProgram> TestPrograms { get; set; }
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<GroupLaborOperation> LaborOperations { get; set; }
+        public DbSet<Pulse.Models.Estimator.TestProgram> EstimatorTestPrograms { get; set; }
+        public DbSet<Pulse.Models.Estimator.ElementType> Estimator_ElementTypes { get; set; }
+        public DbSet<Pulse.Models.Estimator.TestChainItem> ChainItems { get; set; }
+        public DbSet<Pulse.Models.Estimator.ChainItemFilter> ChainItemFilter { get; set; }
+        public DbSet<Pulse.Models.Estimator.OperationsList> OperationsList { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Operation>()
                 .HasNoKey();
             modelBuilder.Entity<Journal>()
             .HasNoKey();
+            modelBuilder.Entity<GroupLaborOperation>()
+                .HasNoKey();
+            modelBuilder.Entity<Pulse.Models.Estimator.ChainItemFilter>().HasNoKey();
         }
     }
 }

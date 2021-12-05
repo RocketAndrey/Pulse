@@ -1,0 +1,44 @@
+﻿@page
+@model UnlinkedOperationsModel
+@{
+}
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr class="text-center">
+            <th>
+                @Html.DisplayNameFor(model => model.Operations[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Operations[0].ClassType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Operations[0].Count_Op)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Pulse.Models.GroupLaborOperation item in Model.Operations)
+        {
+            <tr>
+                <td>
+                    <a asp-page="Details" asp-route-classID="@item.ClassId" asp-route-operationID="@item.BaseOperationID" asp-route-className ="@item.ClassType" asp-route-operationName ="@item.Name">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClassType)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count_Op)
+                </td>
+            </tr>
+
+         }
+        </tbody>
+
+
+    </table>

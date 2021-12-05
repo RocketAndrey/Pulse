@@ -1,0 +1,87 @@
+﻿@page "{handler?}"
+@model Pulse.Pages.LaborLink.DetailsModel
+@{
+}
+<script>
+    function Refresh(event)
+    {
+        var form = document.forms.operations;
+        form.submit();
+    }
+</script>
+
+<form method="post" id="operations">
+      <input type ="hidden" asp-for="ClassId" />
+<input type="hidden" asp-for="ClassName" />
+<input type="hidden" asp-for="OperationName" />
+@Html.HiddenFor(m=>m.OperationID)
+    <table class="table table-sm">
+        <tr>
+            <td><b>Тип изделий</b></td>
+            <td>@Model.ClassName</td>
+        </tr>
+        <tr>
+            <td><b>Операция</b></td>
+            <td>@Model.OperationName</td>
+        </tr>
+        <tr>
+            <td><b>Программа испытаний</b></td>
+            <td> <select asp-for="ProgramID" onchange="Refresh(this)" class="form-control" asp-items="ViewBag.ProgramID"></select></td>
+        </tr>
+        <tr>
+            <td><b>Тип в калькуляторе</b></td>
+            <td> <select asp-for="ElementTypeID" onchange="Refresh(this)" class="form-control" asp-items="ViewBag.ElementTypeID"></select></td>
+
+        </tr>
+        <tr>
+            <td><b>Операция в цепочке</b></td>
+            <td> <select asp-for="TestChainItemID" class="form-control" asp-items="ViewBag.TestChainItemID"></select></td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td> <button  class=" btn btn-outline-info"  asp-route-action="1">Сохранить</button>
+            </td>
+        </tr>
+
+    </table>
+</form>
+<table class="table table-bordered ">
+    <thead>
+        <tr class="text-center">
+            <th>
+                @Html.DisplayNameFor(model => model._asuOperations[0].CardNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._asuOperations[0].TypeNominal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._asuOperations[0].OperationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._asuOperations[0].ClassType)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Pulse.Models.Estimator.OperationsList  item in Model._asuOperations )
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CardNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeNominal)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.OperationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassType )
+            </td>
+        </tr>
+
+        }
+    </tbody>
+</table>

@@ -28,7 +28,11 @@ namespace Pulse.Pages.Execution
         public int CurrentYear { get; set;  }
         public void OnGet()
         {
-
+            string measureSQl = "select e.EquipmentId,e.Code,e.Name, r.Name as RoomName, ev.Temperature,ev.Peasure, ev.Humidity,ev.MeasureTime " +
+            "from Equipment e ,room r, Environment ev where e.Code like '%ИВИТ%' and r.RoomId = e.RoomId " +
+            "and ev.EnvironmentID = (select top 1  ec.EnvironmentID from Environment ec where ec.EquipmentId = e.EquipmentId order by ec.MeasureTime desc)";
+           
+            
             SqlParameter currentMonth = new SqlParameter("@Month", CurrentMonth  );
             SqlParameter currentYear = new SqlParameter("@Year", CurrentYear );
 

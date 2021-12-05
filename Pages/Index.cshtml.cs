@@ -25,13 +25,21 @@ namespace Pulse.Pages
         }
         public int CurrentMonth { get; set; }
         public int CurrentYear { get; set;  }
-        public void OnGet()
+        public  IActionResult  OnGet()
         {
-
+            
             SqlParameter currentMonth = new SqlParameter("@Month", CurrentMonth  );
             SqlParameter currentYear = new SqlParameter("@Year", CurrentYear );
+            try
+            {
 
-            EmployeesList = _context.Employees.FromSqlRaw("sp_PulseUsersMonthWork @Month, @Year", currentMonth, currentYear).ToList();
+                EmployeesList = _context.Employees.FromSqlRaw("sp_PulseUsersMonthWork @Month, @Year", currentMonth, currentYear).ToList();
+                return Page(); 
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message); 
+            }
 
 
         }
