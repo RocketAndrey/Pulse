@@ -9,7 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Pulse.Models.Estimator; 
+using Pulse.Models.Estimator;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace Pulse.Pages.LaborLink
 {
@@ -48,7 +49,9 @@ namespace Pulse.Pages.LaborLink
                 " Estimator_TestChainItemData t,Estimator_ElementType et " +
                 "where t.TestChainItemID = e.TestChainItemID and et.ElementTypeID = t.ElementTypeID " +
                 " and e.AsuClassID ={0} ";
+           
             sql = String.Format(sql, ClassId);
+
             List<Pulse.Models.Estimator.ChainItemFilter> filters = _context.ChainItemFilter.FromSqlRaw(sql).ToList();
             if (filters.Count>0)
             {
@@ -111,7 +114,110 @@ namespace Pulse.Pages.LaborLink
                 " from Estimator_TestChainItemData tci, Estimator_Operation eo " +
                 " where eo.OperationID = tci.OperationID and tci.ElementTypeID = {0} Order BY tci.[Order]",ElementTypeID );
                 _estimatorTestChainItems = _context.ChainItems.FromSqlRaw(sql).ToList();
+       //Сразу выбираем операцию если имя совпадает 
+                foreach ( var item in _estimatorTestChainItems )
+                {
+                    string operationNameTOSearch = OperationName;
+
+
+                    switch (OperationName.Trim())
+                    {
+                        case "Испытание на воздействие атмосферного пониженного давления":
+                    
+                        operationNameTOSearch = "Испытание на пониженное давление";
+                        break;
+                    
+                    case "Отбор на термомеханику":
+                    
+                        operationNameTOSearch = "Отбор образцов";
+                        break;
+                    
+                
+                        case "Идентификация ЭКБ ИП":
+                    
+                        operationNameTOSearch = "Идентификация ЭКБ";
+                        break;
+                        case "Идентификация КИ ИП":
+
+                            operationNameTOSearch = "Идентификация ЭКБ";
+                            break;
+
+                        case "Контроль внешнего вида и сопроводительной документации":
+
+                        operationNameTOSearch = "Проверка внешнего вида и маркировки";
+                            break;
+
+                    case "Приемка объектов испытаний":
+                    
+                        operationNameTOSearch = "Учет и регистрация ЭКБ";
+                            break;
+
+                   case "Проверка на отсутствие признаков контрафактной продукции":
+                    
+                        operationNameTOSearch = "Идентификация ЭКБ";
+                            break;
+                    case "Контроль электрических параметров, функциональный контроль":
+                        operationNameTOSearch = "Контроль электрических параметров в НКУ";
+                            break;
+                        case "Испытание на воздействие пониженной температуры":
+                            operationNameTOSearch = "Испытание на воздействие пониженной рабочей температуры";
+                            break;
+                        case "Испытание на воздействие изменения температуры среды":
+                            operationNameTOSearch = "Испытание на воздействие изменений температуры среды";
+                            break;
+                        case "Испытание на воздействие повышенной влажности воздуха":
+                            operationNameTOSearch = "Испытание на воздействие повышенной  влажности воздуха (длит.- 21 сутки)";
+                            break;
+                        case "Испытание на  воздействие одиночных ударов":
+                            operationNameTOSearch = "Испытание на воздействие одиночного удара";
+                            break;
+                        case "Испытание на воздействие повышенного давления":
+                            operationNameTOSearch = "Испытание на повышенное давление";
+                            break;
+                        case "Испытание на воздействие атмосферного пониженного  давления":
+                            operationNameTOSearch = "Испытание на пониженное давление";
+                            break;
+                        // 	Испытание на виброустойчивость 
+                        case "Испытания на виброустойчивость":
+                            operationNameTOSearch = "Испытание на виброустойчивость при воздействии синусоидальной вибрации";
+                            break;
+                        case "Испытание на вибропрочность":
+                            operationNameTOSearch = "Испытание на виброустойчивость при воздействии синусоидальной вибрации";
+                            break;
+                        case "Испытание на виброустойчивость":
+                            operationNameTOSearch = "Испытание на виброустойчивость при воздействии синусоидальной вибрации";
+                            break;
+                        case "Испытание на ударную прочность":
+                            operationNameTOSearch = "Испытание на виброустойчивость при воздействии синусоидальной вибрации";
+                            break;
+                        case "Испытание на воздействие повышенной температуры среды при эксплуатации":
+                            operationNameTOSearch = "Испытание на воздействие повышенной рабочей температуры";
+                            break;
+                        case "Испытание на воздействие пониженной температуры среды при эксплуатации":
+                            operationNameTOSearch = "Испытание на воздействие пониженной рабочей температуры";
+                            break;
+                        case "Испытание на воздействие повышенной температуры среды при транспортировании и хранении":
+                            operationNameTOSearch = "Испытание на воздействие повышенной предельной температуры";
+                            break;
+                        case "Испытание на воздействие пониженной температуры среды при транспортировании и хранении":
+                            operationNameTOSearch = "Испытание на воздействие пониженной предельной температуры";
+                            break;
+                        case "Анализ упаковки, проверка сопроводительной документации, проверка внешнего вида и маркировки, упаковка":
+                            operationNameTOSearch = "Учет и регистрация ЭКБ";
+                            break;
+                        case "Анализ технических спецификаций, выбор критериев параметров - годности":
+                            operationNameTOSearch = "Анализ технических спецификаций , выбор критериев параметров - годности";
+                            break;
+                   
+             }
+
+                    if (item.Name.Trim()== operationNameTOSearch)
+                    {
+                        TestChainItemID=item.TestChainItemID ; break;   
+                    }
+                }
                 ViewData["TestChainItemID"] = new SelectList(_estimatorTestChainItems, "TestChainItemID", "Name");
+
             }
             //ВЫВОДИМ  список операций 
             sql = "select ro.RouteOperationId, cl.ClassId ,cl.Name as ClassType,bo.BaseOperationId, " +

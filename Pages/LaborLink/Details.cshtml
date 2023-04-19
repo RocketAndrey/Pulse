@@ -33,7 +33,13 @@
             <td> <select asp-for="ElementTypeID" onchange="Refresh(this)" class="form-control" asp-items="ViewBag.ElementTypeID"></select></td>
 
         </tr>
-        <tr>
+        @{string format="table-danger";
+        if(Model.TestChainItemID != 0)
+        {
+                format = "table-success";
+        }
+        }
+        <tr class="@format">
             <td><b>Операция в цепочке</b></td>
             <td> <select asp-for="TestChainItemID" class="form-control" asp-items="ViewBag.TestChainItemID"></select></td>
         </tr>
