@@ -7,10 +7,12 @@
     <title>@ViewData["Title"] - Pulse</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet">
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/mvc-grid/mvc-grid.js"></script>
 
 </head>
 <body onload="SetClock()">
@@ -35,9 +37,22 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Journal/Index">Журнал</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/LaborLink/UnlinkedOperations">Операции</a>
+
+                    
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                Отчеты
+                            </a>
+
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-page="/LaborLink/UnlinkedOperations">Операции</a>
+                                <a class="dropdown-item" asp-area="" asp-page="/Reports">Отчеты</a>
+
+                            </div>
+
                         </li>
+                 
                     </ul>
                     
                 </div>
@@ -57,7 +72,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 АО "КБ Ракета"
+            &copy; 2023 АО "КБ Ракета"
         </div>
     </footer>
 

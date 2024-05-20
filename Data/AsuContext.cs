@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Pulse.Models; 
+using Pulse.Models;
+using Pulse.Models.Views;
 
 namespace Pulse.Data
 {
@@ -30,6 +31,7 @@ namespace Pulse.Data
         public DbSet<Pulse.Models.Estimator.TestChainItem> ChainItems { get; set; }
         public DbSet<Pulse.Models.Estimator.ChainItemFilter> ChainItemFilter { get; set; }
         public DbSet<Pulse.Models.Estimator.OperationsList> OperationsList { get; set; }
+        public DbSet<ContractLaborView> ContractLaborViewList { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Operation>()
@@ -38,6 +40,8 @@ namespace Pulse.Data
             .HasNoKey();
             modelBuilder.Entity<GroupLaborOperation>()
                 .HasNoKey();
+            modelBuilder.Entity<ContractLaborView>()
+            .HasNoKey();
             modelBuilder.Entity<Pulse.Models.Estimator.ChainItemFilter>().HasNoKey();
         }
     }

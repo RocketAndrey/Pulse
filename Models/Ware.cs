@@ -10,8 +10,10 @@ namespace Pulse.Models
     {
         public Int64  WareID { get; set; }
         public Int64 ContractID { get; set; }
+        [Display(Name = "Типономинал:")]
         public string TypeNominal { get; set; }
         public int QTY { get; set; }
+        [Display(Name = "Тип изделий:")]
         public string ClassName { get; set; }
         public string ContractNumber {get;set;} 
         public int InStoreQTY { get; set; }

@@ -23,7 +23,7 @@ namespace Pulse.Pages.LaborLink
         {
             try
             {
-                 Operations =  await _context.LaborOperations.FromSqlRaw("[dbo].[sp_PulseGetEmptyLaborOpreations]").ToListAsync();
+                Operations =  await _context.LaborOperations.FromSqlRaw("[dbo].[sp_PulseGetEmptyLaborOpreations]").ToListAsync();
                 Operations = Operations.OrderByDescending(o => o.Count_Op).ToList();
 
             }

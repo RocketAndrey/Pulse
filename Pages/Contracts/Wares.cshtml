@@ -90,6 +90,53 @@
         </div>
     </div>
 </div>
+<div class="accordion" id="accordionExample3">
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Выполнение договора (факт по данным АСУ ИЦ):
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseThree" class="collapse hide" aria-labelledby="headingThree" data-parent="#accordionExample3">
+            <div class="card-body">
+                <div class="card-body">
+                   
+
+                    <table class="table table-bordered">
+                        <thead class="table-secondary">
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.MonthLabor[0].EndMonth)</td>
+                                <td>@Html.DisplayNameFor(model => model.MonthLabor[0].labor)</td>
+                            </tr>
+                            
+                        </thead>
+                          @foreach (var item in Model.MonthLabor)
+                        {
+                            <tr>
+                                <td> 
+                                    @item.EndDate.ToString("y")
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.labor)
+
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+
+                     <a class="nav-link" target="_blank" asp-page="../Download" asp-route-reportType="contractLabor" asp-route-id="@Model.ContractID"  data-toggle="tooltip" data-placement="bottom" title="Трудоемкость контракта в формате Excel">
+                      <img src="~/xlsx.png"  height="32" width="32"/>Полный отчет по трудоёмкости договора в Excel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
         <table class="table table-bordered">
             <thead>
                 <tr class="table-secondary">

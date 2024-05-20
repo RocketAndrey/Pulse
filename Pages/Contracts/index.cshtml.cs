@@ -12,6 +12,8 @@ using Pulse.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NonFactors.Mvc.Grid;
+using NonFactors.Mvc;
 
 namespace Pulse.Pages.Contracts
 {
@@ -41,6 +43,7 @@ namespace Pulse.Pages.Contracts
 
         public PaginatedList<Contract> ContractsVW { get;set; }
         public List<Organization> Organizations { get; set; }
+        public  IList<Contract> contracts { get; set; } 
 
         private async void setPage(string sortOrder, string pageIndex, string mode)
         {
@@ -50,6 +53,7 @@ namespace Pulse.Pages.Contracts
             int index;
             if (page == "all")
             {
+               
                 index = 1;
             }
             else
@@ -76,7 +80,7 @@ namespace Pulse.Pages.Contracts
 
             SetFilter();
             
-            IList<Contract> contracts =  _context.Contracts.FromSqlRaw("dbo.sp_PulseGetContracts").AsNoTracking().ToList();
+            contracts =  _context.Contracts.FromSqlRaw("dbo.sp_PulseGetContracts").AsNoTracking().ToList();
 
             contracts = CurrentSort switch
             {
@@ -113,18 +117,27 @@ namespace Pulse.Pages.Contracts
                 contracts = contracts.Where(e => regex.IsMatch(e.Code)).ToList();
             }
             if (contractsFilter.OrganizationID != 0 )
-            {
-                
-                            contracts = contracts.Where(e => e.ClientID ==contractsFilter.OrganizationID ).ToList();
+            {          
+                contracts = contracts.Where(e => e.ClientID ==contractsFilter.OrganizationID ).ToList();
             }
             int pageSize = 20;
 
             ContractsVW = await PaginatedList<Contract>.CreateAsync(contracts, index, pageSize);
 
         }
-        public async Task OnGetAsync(string sortOrder, string pageIndex, string mode)
+        public async Task OnGetAsync(string sortOrder, string pageIndex, string mode,string action, int contractId)
         {
-             setPage(sortOrder, pageIndex, mode);
+            if (action != null)
+            {
+                if (action == "Wares")
+                {
+                    if(contractId>0)
+                    {
+                        RedirectToPage("Wares", new {contractID = contractId });
+                    }
+                }
+            }
+            setPage(sortOrder, pageIndex, mode);
 
         }
         public async Task<IActionResult> OnPostAsync()

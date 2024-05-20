@@ -1,0 +1,35 @@
+﻿@page
+@model Pulse.Pages.ReportsModel
+@{
+}
+<form>
+    <div class="mb-3"><h1>Трудоёмкость в месяц</h1></div>
+    <div class="mb-3">
+            <label class="form-label" for="monthselect">
+               Месяц
+            </label>
+
+            <select asp-for="CurentMonth" class="form-control" asp-items="ViewBag.Month" id="monthselect"> </select>
+    </div>
+        
+        <div class="mb-3">
+            <label class="form-check-label" for="yearselect">
+                Год
+            </label>
+            <select asp-for="CurentYear" class="form-control" asp-items="ViewBag.Year" id="yearselect"></select>
+            
+        </div>
+
+    <button class="btn btn-outline-primary" onclick="GetReport()"> Отчет</button>
+ 
+    </>
+</form>
+<script>
+    function GetReport() {
+        var month = document.getElementById('monthselect').selectedIndex+1;
+        var year = document.getElementById('yearselect').value
+        window.open("Download?reportType=contractLabor&id=0&month=" + month + "&year=" + year, "_blank");
+
+    }
+
+</script>

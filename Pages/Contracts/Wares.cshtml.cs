@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pulse.Models;
+using Pulse.Models.Views;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -22,8 +23,10 @@ namespace Pulse.Pages.Contracts
         }
         public List<Ware> Wares;
         public List<TestProgram >Programs;
-        public int ContractID;
+        public Int64 ContractID;
         public string ContractName;
+        public List<ContractMonthLabor> MonthLabor; 
+
         public async Task<IActionResult> OnGetAsync(int? contractID)
         {
             if (contractID == null)
@@ -36,7 +39,7 @@ namespace Pulse.Pages.Contracts
             Wares = _context.Wares.FromSqlRaw(sql, scontractID).ToList();
 
             Contract = _context.Contracts.FromSqlRaw("dbo.sp_PulseGetContracts @ContractID", new SqlParameter("@ContractID", contractID)).ToList()[0];
-
+            
             sql = String.Format("select p.ProgramId, pc.ContractId, p.Number, p.Name,p.Ka from Program p, Program_Contract pc where p.ProgramId = pc.ProgramId and pc.ContractId ={0}", contractID );
 
             Programs = _context.TestPrograms.FromSqlRaw(sql).ToList(); 
@@ -47,6 +50,22 @@ namespace Pulse.Pages.Contracts
             }
 
             ContractID = (int)contractID;
+            SqlParameter param=new SqlParameter("@ConractID",System.Data.SqlDbType.Int);
+            param.Value = contractID;   
+            // трудоемкость
+            List <Pulse.Models.Views.ContractLaborView> laborview = _context.ContractLaborViewList.FromSqlRaw(" dbo.sp_PulseGetContractLabor 0,0, @ConractID", param ).ToList();
+
+            MonthLabor = laborview
+                   .GroupBy(p => p.EndMonth)
+                   .Select(g => new ContractMonthLabor 
+                   { 
+                       EndMonth = g.First().EndMonth,
+                       labor = g.Sum(c => c.Operationlabor)
+                   }
+                   ).ToList();
+            //сортируем
+            MonthLabor = MonthLabor.OrderBy(e=> e.EndDate).ToList();
+
             if (Wares.Count !=0 )
             {
                 ContractName = Wares[0].ContractNumber; 
